@@ -1,5 +1,12 @@
 # Mail in a box on Digital Ocean via terraform
 
+This repo will create a Digital Ocean Droplet running Ubuntu 18.04 that has the following configuration:
+* Floating IP for the Droplet address
+* Spaces bucket for `/home/user-data/backups` to avoid filling up a small disk with backups.
+  * Yes, you could definitely use `rsync`, but this way we don't have to ship the backup data anywhere.
+* Domain and DNS configuration via Digital Ocean DNS.
+* Reads your local SSH key and creates a new SSH key on Digital Ocean.
+
 ## Requirements
 * Terraform v12+
 * Digital Ocean token
