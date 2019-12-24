@@ -15,7 +15,7 @@
 * `digitalocean_droplet` - VM that will run MIAB
 
 ## Usage
-1. Install terraform version 12 and s3fs
+1. Install terraform version 12
 2. Write Digital Ocean key to `secrets/do.key`
 3. Run `terraform init`
 4. Run `terraform plan`
