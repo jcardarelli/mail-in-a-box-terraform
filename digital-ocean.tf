@@ -37,6 +37,11 @@ resource "digitalocean_spaces_bucket" "miab" {
   name          = var.droplet_name
   region        = var.droplet_region
 
+  # TODO: Troubleshoot provisioning with this block uncommented
+  # $ ~/github/mail-in-a-box-tf$ terraform -version
+  # Terraform v0.12.18
+  # + provider.digitalocean v1.12.0
+  #
   # cors_rule {
   #   allowed_headers = ["*"]
   #   allowed_methods = ["*"]
