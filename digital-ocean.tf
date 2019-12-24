@@ -1,6 +1,6 @@
 provider "digitalocean" {
   token = var.do_token
-	spaces_access_id = var.spaces_access_id
+  spaces_access_id = var.spaces_access_id
   spaces_secret_key = var.spaces_secret_key
 }
 
@@ -46,36 +46,36 @@ resource "digitalocean_spaces_bucket" "miab" {
 }
 
 resource "digitalocean_droplet" "miab" {
-  image    					 = var.droplet_image
-  name     					 = var.droplet_name
-  private_networking = var.droplet_private_networking
-  region   					 = var.droplet_region
-  size     					 = var.droplet_size
-  ssh_keys 					 = [digitalocean_ssh_key.miab.fingerprint]
+  image               = var.droplet_image
+  name                = var.droplet_name
+  private_networking  = var.droplet_private_networking
+  region              = var.droplet_region
+  size                = var.droplet_size
+  ssh_keys            = [digitalocean_ssh_key.miab.fingerprint]
 
-	depends_on = [digitalocean_spaces_bucket.miab]
+  depends_on = [digitalocean_spaces_bucket.miab]
 
-	provisioner	"remote-exec" {
-		connection {
-			type = "ssh"
-			user = "root"
-			host = digitalocean_droplet.miab.ipv4_address
-			private_key = file(var.ssh_private_key)
-			agent = false
-		}
+  provisioner  "remote-exec" {
+    connection {
+      type = "ssh"
+      user = "root"
+      host = digitalocean_droplet.miab.ipv4_address
+      private_key = file(var.ssh_private_key)
+      agent = false
+    }
 
-		inline = [
+    inline = [
       # Update, upgrade packages, and install S3 filesystem for DO Spaces
-			"apt-get update && apt-get upgrade -y",
-			"apt-get install -y s3fs",
+      "apt-get update && apt-get upgrade -y",
+      "apt-get install -y s3fs",
 
       # Write Spaces access ID and secret key to remote filesystem
-			"echo ${var.spaces_access_id}:${var.spaces_secret_key} > /root/.passwd-s3fs",
-			"chmod 600 /root/.passwd-s3fs",
-			"mkdir -p /home/user-data/backup",
+      "echo ${var.spaces_access_id}:${var.spaces_secret_key} > /root/.passwd-s3fs",
+      "chmod 600 /root/.passwd-s3fs",
+      "mkdir -p /home/user-data/backup",
 
       # TODO: Fix the double mount issue that this s3fs cmd, followed by the mount -a creates
-			"s3fs ${var.droplet_name} /home/user-data/backup -ourl=https://${var.droplet_region}.digitaloceanspaces.com -ouse_cache=/tmp",
+      "s3fs ${var.droplet_name} /home/user-data/backup -ourl=https://${var.droplet_region}.digitaloceanspaces.com -ouse_cache=/tmp",
       "echo 's3fs#${var.droplet_name} /home/user-data/backup fuse _netdev,allow_other,use_path_request_style,url=https://${var.droplet_region}.digitaloceanspaces.com 0 0' >> /etc/fstab",
       "mount -a",
 
@@ -86,8 +86,8 @@ resource "digitalocean_droplet" "miab" {
       "export STORAGE_ROOT=/home/user-data",
       "export STORAGE_USER=${var.droplet_name}",
       "curl -s https://mailinabox.email/setup.sh | sudo -E bash",
-		]
-	}
+    ]
+  }
 }
 
 output "floating_ip_address" {
