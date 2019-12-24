@@ -1,14 +1,14 @@
-# Mail in a box on Digital Ocean via terraform
+# Mail-in-a-Box on Digital Ocean via terraform
 
 This repo will create a Digital Ocean Droplet running Ubuntu 18.04 that has the following configuration:
-* Floating IP for the Droplet address
-* Spaces bucket for `/home/user-data/backups` to avoid filling up a small disk with backups.
+* [Floating IP](https://www.digitalocean.com/docs/networking/floating-ips) for the Droplet address.
+* [Spaces](https://www.digitalocean.com/docs/spaces) bucket for `/home/user-data/backups` to avoid filling up a small disk with backups.
   * Yes, you could definitely use `rsync`, but this way we don't have to ship the backup data anywhere.
-* Domain and DNS configuration via Digital Ocean DNS.
+* Domain and DNS configuration via [Digital Ocean DNS](https://www.digitalocean.com/docs/networking/dns).
 * Reads your local SSH key and creates a new SSH key on Digital Ocean.
 
 ## Requirements
-* Terraform v12+
+* Terraform version 0.12+
 * Digital Ocean token
 * Digital Ocean Spaces access id
 * Digital Ocean Spaces secret key
@@ -22,7 +22,7 @@ This repo will create a Digital Ocean Droplet running Ubuntu 18.04 that has the 
 * `digitalocean_droplet` - VM that will run MIAB
 
 ## Usage
-1. Install terraform version 12.
+1. [Install terraform version 0.12](https://www.terraform.io/downloads.html).
 2. `cp example-vars.tf vars.tf`.
 3. Write Digital Ocean keys to `vars.tf`, and replace variables as necessary.
 4. Run `terraform init`.
