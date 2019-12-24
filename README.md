@@ -15,8 +15,9 @@
 * `digitalocean_droplet` - VM that will run MIAB
 
 ## Usage
-1. Install terraform version 12
-2. Write Digital Ocean key to `secrets/do.key`
-3. Run `terraform init`
-4. Run `terraform plan`
-5. Run `terraform apply` if there were no error during `terraform plan`
+1. Install terraform version 12.
+2. `cp example-vars.tf vars.tf`.
+3. Write Digital Ocean keys to `vars.tf`, and replace variables as necessary.
+4. Run `terraform init`.
+5. Run `terraform plan`.
+6. Run `terraform apply` if there were no errors during `terraform plan`.
