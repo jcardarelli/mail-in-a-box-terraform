@@ -84,10 +84,10 @@ resource "digitalocean_droplet" "miab" {
       # Write Spaces access ID and secret key to remote filesystem
       "echo ${var.spaces_access_id}:${var.spaces_secret_key} > /root/.passwd-s3fs",
       "chmod 600 /root/.passwd-s3fs",
-      "mkdir -p /home/user-data/backup",
+      "mkdir -p $STORAGE_ROOT/backup",
 
       # Mount Spaces bucket using s3fs
-      "echo 's3fs#${var.droplet_name} /home/user-data/backup fuse _netdev,allow_other,use_path_request_style,url=https://${var.droplet_region}.digitaloceanspaces.com 0 0' >> /etc/fstab",
+      "echo 's3fs#${var.droplet_name} $STORAGE_ROOT/backup fuse _netdev,allow_other,use_path_request_style,url=https://${var.droplet_region}.digitaloceanspaces.com 0 0' >> /etc/fstab",
       "mount -a",
 
       # Install Mail-in-a-box
