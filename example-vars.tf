@@ -1,5 +1,5 @@
 variable "do_token" {
-	default = "****************************************************************"
+  default = "****************************************************************"
 }
 
 variable "spaces_access_id" {
@@ -23,7 +23,7 @@ variable "droplet_name" {
 }
 
 variable "droplet_private_networking" {
-	default = "true"
+  default = "true"
 }
 
 variable "droplet_region" {
