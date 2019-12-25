@@ -8,11 +8,11 @@ resource "digitalocean_domain" "miab" {
   name = var.fqdn
 }
 
-resource "digitalocean_record" "miab" {
+resource "digitalocean_record" "ssh" {
   domain = digitalocean_domain.miab.name
   type   = "A"
   name   = var.droplet_name
-  value  = digitalocean_droplet.miab.ipv4_address_private
+  value  = digitalocean_floating_ip.miab.ip_address
 }
 
 resource "digitalocean_record" "miab_box" {
