@@ -15,7 +15,7 @@ resource "digitalocean_record" "ssh" {
   value  = digitalocean_floating_ip.miab.ip_address
 }
 
-resource "digitalocean_record" "miab_box" {
+resource "digitalocean_record" "box" {
   domain = digitalocean_domain.miab.name
   type   = "A"
   name   = "box"
