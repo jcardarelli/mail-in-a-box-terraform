@@ -70,6 +70,13 @@ resource "digitalocean_droplet" "miab" {
     }
 
     inline = [
+      # Mail-in-a-Box environment variables
+      "export NONINTERACTIVE=1",
+      "export PRIMARY_HOSTNAME=box.${digitalocean_domain.miab.name}",
+      "export PUBLIC_IP=auto",
+      "export STORAGE_ROOT=/home/user-data",
+      "export STORAGE_USER=${var.droplet_name}",
+
       # Update, upgrade packages, and install S3 filesystem for DO Spaces
       "apt-get update && apt-get upgrade -y",
       "apt-get install -y s3fs",
@@ -84,11 +91,6 @@ resource "digitalocean_droplet" "miab" {
       "mount -a",
 
       # Install Mail-in-a-box
-      "export NONINTERACTIVE=1",
-      "export PRIMARY_HOSTNAME=box.${digitalocean_domain.miab.name}",
-      "export PUBLIC_IP=auto",
-      "export STORAGE_ROOT=/home/user-data",
-      "export STORAGE_USER=${var.droplet_name}",
       "curl -s https://mailinabox.email/setup.sh | sudo -E bash",
     ]
   }
