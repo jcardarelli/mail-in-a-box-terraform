@@ -12,7 +12,19 @@ resource "digitalocean_record" "ssh" {
   domain = digitalocean_domain.miab.name
   type   = "A"
   name   = var.droplet_name
-  value  = digitalocean_floating_ip.miab.ip_address
+  value  = digitalocean_droplet.miab.ipv4_address
+}
+
+resource "digitalocean_firewall" "ssh" {
+  name = "ssh_only_to_droplet_ip"
+
+  droplet_ids = [digitalocean_droplet.miab.id]
+
+  inbound_rule {
+    protocol         = "tcp"
+    port_range       = "22"
+    source_addresses = ["0.0.0.0/0", "::/0"]
+  }
 }
 
 resource "digitalocean_record" "box" {
