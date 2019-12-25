@@ -18,7 +18,7 @@ This repo will create a Digital Ocean Droplet running Ubuntu 18.04 that has the 
 * `digitalocean_record` - DNS A record for domain
 * `digitalocean_floating_ip` - Static IP for Droplet
 * `digitalocean_ssh_key` - Separate SSH key created for the droplet
-* `digitalocean_spaces_bucket` - Block storage for MIAB backup directory
+* `digitalocean_spaces_bucket` - Object storage for MIAB backup directory
 * `digitalocean_droplet` - VM that will run MIAB
 
 ## Usage
