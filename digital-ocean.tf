@@ -79,7 +79,7 @@ resource "digitalocean_droplet" "miab" {
       "chmod 600 /root/.passwd-s3fs",
       "mkdir -p /home/user-data/backup",
 
-      # TODO: Fix the double mount issue that this s3fs cmd, followed by the mount -a creates
+      # Mount Spaces bucket using s3fs
       "echo 's3fs#${var.droplet_name} /home/user-data/backup fuse _netdev,allow_other,use_path_request_style,url=https://${var.droplet_region}.digitaloceanspaces.com 0 0' >> /etc/fstab",
       "mount -a",
 
