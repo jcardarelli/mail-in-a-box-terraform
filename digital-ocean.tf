@@ -92,6 +92,9 @@ resource "digitalocean_droplet" "miab" {
 
       # Install Mail-in-a-box
       "curl -s https://mailinabox.email/setup.sh | sudo -E bash",
+
+      # Install Digital Ocean metrics agent
+      "curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash",
     ]
   }
 }
