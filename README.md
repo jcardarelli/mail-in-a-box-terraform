@@ -71,3 +71,22 @@ variable "ssh_private_key" {
   default = "/home/your_user/.ssh/id_rsa"
 }
 ```
+
+## Pre-commit hook to generate terraform graph files
+Requires graphviz on your local system, which can be installed with `sudo apt install graphviz`.
+
+Put this script in the file `.git/hooks/pre-commit` and run `chmod +x` to automatically add graphs for every git commit.
+
+```
+#!/bin/bash
+COMMIT_HASH=$(git rev-parse HEAD | cut -b 1-6)
+
+if ! command dot > /dev/null 2>&1; then
+  echo "graphviz not found, terraform graph will not be generated."
+else
+  mkdir -p graphs
+  terraform graph > graphs/miab-${COMMIT_HASH}.dot
+  dot graphs/miab-${COMMIT_HASH}.dot -Tsvg -o graphs/miab-${COMMIT_HASH}.svg
+  git add graphs/miab-${COMMIT_HASH}.{svg,dot}
+fi
+```
