@@ -22,6 +22,20 @@ resource "digitalocean_record" "box" {
   value  = digitalocean_floating_ip.miab.ip_address
 }
 
+resource "digitalocean_record" "ns1" {
+  domain = digitalocean_domain.miab.name
+  type   = "NS"
+  name   = "@"
+  value  = "ns1.box.${digitalocean_domain.miab.name}."
+}
+
+resource "digitalocean_record" "ns2" {
+  domain = digitalocean_domain.miab.name
+  type   = "NS"
+  name   = "@"
+  value  = "ns2.box.${digitalocean_domain.miab.name}."
+}
+
 resource "digitalocean_floating_ip" "miab" {
   droplet_id = digitalocean_droplet.miab.id
   region     = digitalocean_droplet.miab.region
