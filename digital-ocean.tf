@@ -83,37 +83,38 @@ resource "digitalocean_droplet" "miab" {
       agent = false
     }
 
-    inline = [
-      # Mail-in-a-Box environment variables
-      "export NONINTERACTIVE=1",
-      "export PRIMARY_HOSTNAME=box.${digitalocean_domain.miab.name}",
-      "export PUBLIC_IP=auto",
-      "export STORAGE_ROOT=${var.miab_STORAGE_ROOT}",
-      "export STORAGE_USER=${var.droplet_name}",
+    inline = [<<EOF
+# Mail-in-a-Box environment variables
+export NONINTERACTIVE=1
+export PRIMARY_HOSTNAME=box.${digitalocean_domain.miab.name}
+export PUBLIC_IP=auto
+export STORAGE_ROOT=${var.miab_STORAGE_ROOT}
+export STORAGE_USER=${var.droplet_name}
 
-      # Update, upgrade packages, and install S3 filesystem for DO Spaces
-      "apt-get update && apt-get upgrade -y",
-      "apt-get install -y s3fs",
+# Update, upgrade packages, and install S3 filesystem for DO Spaces
+apt-get update && apt-get upgrade -y
+apt-get install -y s3fs
 
-      # Write Spaces access ID and secret key to remote filesystem
-      "echo ${var.spaces_access_id}:${var.spaces_secret_key} > /root/.passwd-s3fs",
-      "chmod 600 /root/.passwd-s3fs",
-      "mkdir -p ${var.miab_STORAGE_ROOT}/backup",
+# Write Spaces access ID and secret key to remote filesystem
+echo ${var.spaces_access_id}:${var.spaces_secret_key} > /root/.passwd-s3fs
+chmod 600 /root/.passwd-s3fs
+mkdir -p ${var.miab_STORAGE_ROOT}/backup
 
-      # Mount Spaces bucket using s3fs
-      "echo 's3fs#${var.droplet_name} ${var.miab_STORAGE_ROOT}/backup fuse _netdev,allow_other,use_path_request_style,url=https://${var.droplet_region}.digitaloceanspaces.com 0 0' >> /etc/fstab",
-      "mount -a",
+# Mount Spaces bucket using s3fs
+echo 's3fs#${var.droplet_name} ${var.miab_STORAGE_ROOT}/backup fuse _netdev,allow_other,use_path_request_style,url=https://${var.droplet_region}.digitaloceanspaces.com 0 0' >> /etc/fstab
+mount -a
 
-      # Install Mail-in-a-box
-      "curl -s https://mailinabox.email/setup.sh | sudo -E bash",
+# Install Mail-in-a-box
+curl -s https://mailinabox.email/setup.sh | sudo -E bash
 
-      # Install Digital Ocean metrics agent
-      "curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash",
+# Install Digital Ocean metrics agent
+curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash
 
-      # Only allow SSH connections via the Droplet IP
-      "sed -i 's/#ListenAddress 0.0.0.0/ListenAddress ${digitalocean_droplet.miab.ipv4_address}/' /etc/ssh/sshd_config",
-      "sed -i 's/#Port 22/Port ${var.ssh_port}/' /etc/ssh/sshd_config",
-      "echo 'restart SSH to reload with new settings: service sshd restart'",
+# Only allow SSH connections via the Droplet IP
+sed -i 's/#ListenAddress 0.0.0.0/ListenAddress ${digitalocean_droplet.miab.ipv4_address}/' /etc/ssh/sshd_config
+sed -i 's/#Port 22/Port ${var.ssh_port}/' /etc/ssh/sshd_config
+echo 'restart SSH to reload with new settings: service sshd restart'
+EOF
     ]
   }
 }
