@@ -95,6 +95,11 @@ resource "digitalocean_droplet" "miab" {
 
       # Install Digital Ocean metrics agent
       "curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash",
+
+      # Only allow SSH connections via the Droplet IP
+      "sed -i 's/#ListenAddress 0.0.0.0/ListenAddress ${digitalocean_droplet.miab.ipv4_address}/' /etc/ssh/sshd_config",
+      "sed -i 's/#Port 22/Port ${var.ssh_port}/' /etc/ssh/sshd_config",
+      "service sshd restart",
     ]
   }
 }
