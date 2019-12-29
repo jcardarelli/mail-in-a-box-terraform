@@ -84,6 +84,9 @@ resource "digitalocean_droplet" "miab" {
     }
 
     inline = [<<EOF
+#!/bin/bash
+set -e
+
 # Mail-in-a-Box environment variables
 export NONINTERACTIVE=1
 export PRIMARY_HOSTNAME=box.${digitalocean_domain.miab.name}
@@ -93,7 +96,7 @@ export STORAGE_USER=${var.droplet_name}
 
 # Update, upgrade packages, and install S3 filesystem for DO Spaces
 apt-get update && apt-get upgrade -y
-apt-get install -y s3fs
+apt-get install -y s3fs jq
 
 # Write Spaces access ID and secret key to remote filesystem
 echo ${var.spaces_access_id}:${var.spaces_secret_key} > /root/.passwd-s3fs
@@ -103,6 +106,29 @@ mkdir -p ${var.miab_STORAGE_ROOT}/backup
 # Mount Spaces bucket using s3fs
 echo 's3fs#${var.droplet_name} ${var.miab_STORAGE_ROOT}/backup fuse _netdev,allow_other,use_path_request_style,url=https://${var.droplet_region}.digitaloceanspaces.com 0 0' >> /etc/fstab
 mount -a
+
+# Get the IDs for all ns*.digitalocean.com nameserver records
+ids=$(curl -s -X GET \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer ${var.do_token}" \
+"https://api.digitalocean.com/v2/domains/${var.fqdn}/records" \
+| jq '.domain_records[] | select (.data|test("ns[1,2,3].digitalocean.com")) | .id')
+
+if [[ -z $ids ]]; then
+  echo "Could not find nameserver IDs"
+  exit 1
+fi
+
+for id in $ids; do
+  echo "Deleting NS record with ID $id"
+
+  if curl -X DELETE -H \
+    "Content-Type: application/json" \
+    -H "Authorization: Bearer ${var.do_token}" \
+    "https://api.digitalocean.com/v2/domains/${var.fqdn}/records/$id"; then
+    echo "Removed default nameserver record $ns with ID $id"
+  fi
+done
 
 # Install Mail-in-a-box
 curl -s https://mailinabox.email/setup.sh | sudo -E bash
