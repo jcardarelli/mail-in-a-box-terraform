@@ -37,8 +37,12 @@ resource "digitalocean_record" "ns2" {
 }
 
 resource "digitalocean_floating_ip" "miab" {
+  region     = var.do_region
+}
+
+resource "digitalocean_floating_ip_assignment" "miab" {
+  ip_address = digitalocean_floating_ip.miab.ip_address
   droplet_id = digitalocean_droplet.miab.id
-  region     = digitalocean_droplet.miab.region
 }
 
 resource "digitalocean_ssh_key" "miab" {
@@ -49,7 +53,7 @@ resource "digitalocean_ssh_key" "miab" {
 # Bucket for MIAB/Nextcloud FUSE mount
 resource "digitalocean_spaces_bucket" "miab" {
   name          = var.droplet_name
-  region        = var.droplet_region
+  region        = var.do_region
 
   # TODO: Troubleshoot provisioning with this block uncommented
   # $ ~/github/mail-in-a-box-tf$ terraform -version
@@ -68,7 +72,7 @@ resource "digitalocean_droplet" "miab" {
   image               = var.droplet_image
   name                = var.droplet_name
   private_networking  = var.droplet_private_networking
-  region              = var.droplet_region
+  region              = var.do_region
   size                = var.droplet_size
   ssh_keys            = [digitalocean_ssh_key.miab.fingerprint]
 
@@ -90,7 +94,7 @@ set -e
 # Mail-in-a-Box environment variables
 export NONINTERACTIVE=1
 export PRIMARY_HOSTNAME=box.${digitalocean_domain.miab.name}
-export PUBLIC_IP=auto
+export PUBLIC_IP=${digitalocean_floating_ip.miab.ip_address}
 export STORAGE_ROOT=${var.miab_STORAGE_ROOT}
 export STORAGE_USER=${var.droplet_name}
 
@@ -104,7 +108,7 @@ chmod 600 /root/.passwd-s3fs
 mkdir -p ${var.miab_STORAGE_ROOT}/backup
 
 # Mount Spaces bucket using s3fs
-echo 's3fs#${var.droplet_name} ${var.miab_STORAGE_ROOT}/backup fuse _netdev,allow_other,use_path_request_style,url=https://${var.droplet_region}.digitaloceanspaces.com 0 0' >> /etc/fstab
+echo 's3fs#${var.droplet_name} ${var.miab_STORAGE_ROOT}/backup fuse _netdev,allow_other,use_path_request_style,url=https://${var.do_region}.digitaloceanspaces.com 0 0' >> /etc/fstab
 mount -a
 
 # Get the IDs for all ns*.digitalocean.com nameserver records

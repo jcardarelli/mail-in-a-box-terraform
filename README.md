@@ -35,6 +35,10 @@ variable "do_token" {
   default = "****************************************************************"
 }
 
+variable "do_region" {
+  default = "sfo2"
+}
+
 variable "spaces_access_id" {
   default = "********************"
 }
