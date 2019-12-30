@@ -55,10 +55,6 @@ variable "droplet_image" {
   default = "ubuntu-18-04-x64"
 }
 
-variable "droplet_name" {
-  default = "miab"
-}
-
 variable "droplet_private_networking" {
   default = "true"
 }

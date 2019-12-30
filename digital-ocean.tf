@@ -11,7 +11,7 @@ resource "digitalocean_domain" "miab" {
 resource "digitalocean_record" "ssh" {
   domain = digitalocean_domain.miab.name
   type   = "A"
-  name   = var.droplet_name
+  name   = "box.${digitalocean_domain.miab.name}"
   value  = digitalocean_droplet.miab.ipv4_address
 }
 
@@ -52,7 +52,7 @@ resource "digitalocean_ssh_key" "miab" {
 
 # Bucket for MIAB/Nextcloud FUSE mount
 resource "digitalocean_spaces_bucket" "miab" {
-  name          = var.droplet_name
+  name          = "box.${digitalocean_domain.miab.name}"
   region        = var.do_region
 
   # TODO: Troubleshoot provisioning with this block uncommented
@@ -70,7 +70,7 @@ resource "digitalocean_spaces_bucket" "miab" {
 
 resource "digitalocean_droplet" "miab" {
   image               = var.droplet_image
-  name                = var.droplet_name
+  name                = "box.${digitalocean_domain.miab.name}"
   private_networking  = var.droplet_private_networking
   region              = var.do_region
   size                = var.droplet_size
@@ -96,7 +96,6 @@ export NONINTERACTIVE=1
 export PRIMARY_HOSTNAME=box.${digitalocean_domain.miab.name}
 export PUBLIC_IP=${digitalocean_floating_ip.miab.ip_address}
 export STORAGE_ROOT=${var.miab_STORAGE_ROOT}
-export STORAGE_USER=${var.droplet_name}
 
 # Update, upgrade packages, and install S3 filesystem for DO Spaces
 apt-get update && apt-get upgrade -y
@@ -108,7 +107,7 @@ chmod 600 /root/.passwd-s3fs
 mkdir -p ${var.miab_STORAGE_ROOT}/backup
 
 # Mount Spaces bucket using s3fs
-echo 's3fs#${var.droplet_name} ${var.miab_STORAGE_ROOT}/backup fuse _netdev,allow_other,use_path_request_style,url=https://${var.do_region}.digitaloceanspaces.com 0 0' >> /etc/fstab
+echo 's3fs#box.${digitalocean_domain.miab.name} ${var.miab_STORAGE_ROOT}/backup fuse _netdev,allow_other,use_path_request_style,url=https://${var.do_region}.digitaloceanspaces.com 0 0' >> /etc/fstab
 mount -a
 
 # Get the IDs for all ns*.digitalocean.com nameserver records
