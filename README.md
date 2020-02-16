@@ -84,9 +84,12 @@ COMMIT_HASH=$(git rev-parse HEAD | cut -b 1-6)
 if ! command dot > /dev/null 2>&1; then
   echo "graphviz not found, terraform graph will not be generated."
 else
-  mkdir -p graphs
-  terraform graph > graphs/miab-${COMMIT_HASH}.dot
-  dot graphs/miab-${COMMIT_HASH}.dot -Tsvg -o graphs/miab-${COMMIT_HASH}.svg
-  git add graphs/miab-${COMMIT_HASH}.{svg,dot}
+  # Only run terraform graph when *.tf files change
+  git diff --cached --name-only | if grep --silent \.tf; then
+    mkdir -p graphs
+    terraform graph > graphs/miab-${COMMIT_HASH}.dot
+    dot graphs/miab-${COMMIT_HASH}.dot -Tsvg -o graphs/miab-${COMMIT_HASH}.svg
+    git add graphs/miab-${COMMIT_HASH}.{svg,dot}
+  fi
 fi
 ```
