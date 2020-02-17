@@ -78,29 +78,6 @@ mkdir -p ${var.miab_STORAGE_ROOT}/backup
 echo 's3fs#box.${var.fqdn} ${var.miab_STORAGE_ROOT}/backup fuse _netdev,allow_other,use_path_request_style,url=https://${var.do_region}.digitaloceanspaces.com 0 0' >> /etc/fstab
 mount -a
 
-# Get the IDs for all ns*.digitalocean.com nameserver records
-ids=$(curl -s -X GET \
--H "Content-Type: application/json" \
--H "Authorization: Bearer ${var.do_token}" \
-"https://api.digitalocean.com/v2/domains/${var.fqdn}/records" \
-| jq '.domain_records[] | select (.data|test("ns[1,2,3].digitalocean.com")) | .id')
-
-if [[ -z $ids ]]; then
-  echo "Could not find nameserver IDs"
-  exit 1
-fi
-
-for id in $ids; do
-  echo "Deleting NS record with ID $id"
-
-  if curl -X DELETE -H \
-    "Content-Type: application/json" \
-    -H "Authorization: Bearer ${var.do_token}" \
-    "https://api.digitalocean.com/v2/domains/${var.fqdn}/records/$id"; then
-    echo "Removed default nameserver record $ns with ID $id"
-  fi
-done
-
 # Install Mail-in-a-box
 curl -s https://mailinabox.email/setup.sh | sudo -E bash
 
