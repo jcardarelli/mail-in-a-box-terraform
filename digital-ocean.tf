@@ -40,6 +40,7 @@ resource "digitalocean_droplet" "miab" {
   image               = var.droplet_image
   name                = "box.${var.fqdn}"
   private_networking  = var.droplet_private_networking
+  ipv6                = true
   region              = var.do_region
   size                = var.droplet_size
   ssh_keys            = [digitalocean_ssh_key.miab.fingerprint]
