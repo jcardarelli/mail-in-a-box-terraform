@@ -9,7 +9,7 @@ resource "digitalocean_domain" "miab" {
 }
 
 resource "digitalocean_floating_ip" "miab" {
-  region     = var.do_region
+  region = var.do_region
 }
 
 resource "digitalocean_floating_ip_assignment" "miab" {
@@ -24,8 +24,8 @@ resource "digitalocean_ssh_key" "miab" {
 
 # Bucket for MIAB/Nextcloud FUSE mount
 resource "digitalocean_spaces_bucket" "miab" {
-  name          = "box.${digitalocean_domain.miab.name}"
-  region        = var.do_region
+  name   = "box.${digitalocean_domain.miab.name}"
+  region = var.do_region
 
   # TODO: Troubleshoot provisioning with this block uncommented
   # $ ~/github/mail-in-a-box-tf$ terraform -version
@@ -52,11 +52,11 @@ resource "digitalocean_droplet" "miab" {
 
   provisioner  "remote-exec" {
     connection {
-      type = "ssh"
-      user = "root"
-      host = digitalocean_droplet.miab.ipv4_address
+      type        = "ssh"
+      user        = "root"
+      host        = digitalocean_droplet.miab.ipv4_address
       private_key = file(var.ssh_private_key)
-      agent = false
+      agent       = false
     }
 
     inline = [<<EOF
