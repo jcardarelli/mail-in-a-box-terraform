@@ -8,20 +8,6 @@ resource "digitalocean_domain" "miab" {
   name = var.fqdn
 }
 
-resource "digitalocean_record" "ssh" {
-  domain = digitalocean_domain.miab.name
-  type   = "A"
-  name   = "box.${digitalocean_domain.miab.name}"
-  value  = digitalocean_droplet.miab.ipv4_address
-}
-
-resource "digitalocean_record" "box" {
-  domain = digitalocean_domain.miab.name
-  type   = "A"
-  name   = "box"
-  value  = digitalocean_floating_ip.miab.ip_address
-}
-
 resource "digitalocean_floating_ip" "miab" {
   region     = var.do_region
 }
