@@ -24,7 +24,7 @@ variable "fqdn" {
 }
 
 variable "droplet_image" {
-  default     = "ubuntu-18-04-x64"
+  default     = "ubuntu-24-04-x64"
   description = "Base OS image to use for the MiaB droplet."
 }
 
