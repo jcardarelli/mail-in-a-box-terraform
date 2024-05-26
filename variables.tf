@@ -16,7 +16,7 @@ variable "spaces_secret_key" {
 }
 
 variable "fqdn" {
-  default     = "yourdomain.com"
+  default     = "example.com"
   description = "Domain name for your email server. This is typically box.example.com, and your email address would be you@example.com."
 }
 
