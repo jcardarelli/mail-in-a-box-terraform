@@ -1,4 +1,4 @@
-# Mail-in-a-Box on Digital Ocean via terraform
+# Mail-in-a-Box Digital Ocean Terraform module
 
 This repo will create a Digital Ocean Droplet running Ubuntu 18.04 that has the following configuration:
 * [Floating IP](https://www.digitalocean.com/docs/networking/floating-ips) for the Droplet address.
