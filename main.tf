@@ -1,6 +1,6 @@
 provider "digitalocean" {
-  token = var.do_token
-  spaces_access_id = var.spaces_access_id
+  token             = var.do_token
+  spaces_access_id  = var.spaces_access_id
   spaces_secret_key = var.spaces_secret_key
 }
 
@@ -37,17 +37,17 @@ resource "digitalocean_spaces_bucket" "miab" {
 }
 
 resource "digitalocean_droplet" "miab" {
-  image               = var.droplet_image
-  name                = "box.${var.fqdn}"
-  private_networking  = var.droplet_private_networking
-  ipv6                = true
-  region              = var.do_region
-  size                = var.droplet_size
-  ssh_keys            = [digitalocean_ssh_key.miab.fingerprint]
+  image              = var.droplet_image
+  name               = "box.${var.fqdn}"
+  private_networking = var.droplet_private_networking
+  ipv6               = true
+  region             = var.do_region
+  size               = var.droplet_size
+  ssh_keys           = [digitalocean_ssh_key.miab.fingerprint]
 
   depends_on = [digitalocean_spaces_bucket.miab]
 
-  provisioner  "remote-exec" {
+  provisioner "remote-exec" {
     connection {
       type        = "ssh"
       user        = "root"
