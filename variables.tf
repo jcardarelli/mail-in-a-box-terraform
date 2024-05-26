@@ -1,5 +1,4 @@
 variable "do_token" {
-  default     = "****************************************************************"
   description = "Token to authenticate with your Digital Ocean account."
 }
 
@@ -9,12 +8,10 @@ variable "do_region" {
 }
 
 variable "spaces_access_id" {
-  default     = "********************"
   description = "Digital Ocean Spaces access ID."
 }
 
 variable "spaces_secret_key" {
-  default     = "*******************************************"
   description = "Digital Ocean Spaces secret key."
 }
 
