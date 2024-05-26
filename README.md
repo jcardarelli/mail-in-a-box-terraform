@@ -29,49 +29,6 @@ This repo will create a Digital Ocean Droplet running Ubuntu 18.04 that has the 
 5. Run `terraform plan`.
 6. Run `terraform apply` if there were no errors during `terraform plan`.
 
-## Example Variables
-```
-variable "do_token" {
-  default = "****************************************************************"
-}
-
-variable "do_region" {
-  default = "sfo2"
-}
-
-variable "spaces_access_id" {
-  default = "********************"
-}
-
-variable "spaces_secret_key" {
-  default = "*******************************************"
-}
-
-variable "fqdn" {
-  default = "yourdomain.com"
-}
-
-variable "droplet_image" {
-  default = "ubuntu-18-04-x64"
-}
-
-variable "droplet_private_networking" {
-  default = "true"
-}
-
-variable "droplet_region" {
-  default = "sfo2"
-}
-
-variable "droplet_size" {
-  default = "s-1vcpu-1gb"
-}
-
-variable "ssh_private_key" {
-  default = "/home/your_user/.ssh/id_rsa"
-}
-```
-
 ## Pre-commit hook to generate terraform graph files
 Requires `graphviz` on your local system, which can be installed with `sudo apt install graphviz` or `brew install graphviz`.
 
