@@ -73,7 +73,7 @@ variable "ssh_private_key" {
 ```
 
 ## Pre-commit hook to generate terraform graph files
-Requires `graphviz` on your local system, which can be installed with `sudo apt install graphviz`.
+Requires `graphviz` on your local system, which can be installed with `sudo apt install graphviz` or `brew install graphviz`.
 
 Put this script in the file `.git/hooks/pre-commit` and run `chmod +x` to automatically add graphs for every git commit.
 
