@@ -56,6 +56,7 @@ resource "digitalocean_droplet" "miab" {
       agent       = false
     }
 
+    # TODO: Move this to a separate file
     inline = [<<EOF
 #!/bin/bash
 set -e
