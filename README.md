@@ -34,7 +34,7 @@ Requires `graphviz` on your local system, which can be installed with `sudo apt 
 
 Put this script in the file `.git/hooks/pre-commit` and run `chmod +x` to automatically add graphs for every git commit.
 
-```
+```bash
 #!/usr/bin/env bash
 COMMIT_HASH=$(git rev-parse HEAD | cut -b 1-6)
 
