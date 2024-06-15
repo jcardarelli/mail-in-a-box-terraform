@@ -1,5 +1,5 @@
 secrets/
-vars.tf
+terraform.tfvars
 terraform.tfstate*
 *.swp
 *.terraform
