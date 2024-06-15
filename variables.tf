@@ -3,7 +3,6 @@ variable "do_token" {
 }
 
 variable "do_region" {
-  default     = "sfo2"
   description = "Digital Ocean region where the MiaB droplet will be hosted."
 }
 
