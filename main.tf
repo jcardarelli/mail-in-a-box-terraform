@@ -14,7 +14,7 @@ resource "digitalocean_floating_ip_assignment" "miab" {
 }
 
 resource "digitalocean_ssh_key" "miab" {
-  name       = "Mail in a box"
+  name       = "SSH key for mail in a box at ${var.fqdn}"
   public_key = file("${var.ssh_private_key}.pub")
 }
 
