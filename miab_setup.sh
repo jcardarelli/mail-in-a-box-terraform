@@ -5,15 +5,15 @@ error_handler() { echo "error at line: $1"; }
 trap cleanup EXIT
 trap 'error_handler $LINENO' ERR
 
-SSH_PORT=24224
-
 # Mail-in-a-Box environment variables
-export NONINTERACTIVE=1
+export NONINTERACTIVE="1"
 export PRIMARY_HOSTNAME="$1"
 export PUBLIC_IP="$2"
-PRIVATE_IP="$3"
 export STORAGE_ROOT="$4"
+
+PRIVATE_IP="$3"
 DO_REGION="$5"
+SSH_PORT="24224"
 
 # Update, upgrade packages, and install S3 filesystem for DO Spaces
 apt-get update && apt-get upgrade -y
