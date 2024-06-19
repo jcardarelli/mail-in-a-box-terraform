@@ -38,6 +38,5 @@ variable "droplet_size" {
 }
 
 variable "ssh_private_key" {
-  default     = "$HOME/.ssh/id_rsa"
   description = "The path to the SSH key you'd like to access the MiaB host with."
 }
