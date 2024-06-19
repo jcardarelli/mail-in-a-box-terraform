@@ -1,0 +1,5 @@
+do_token          = ""
+do_region         = "sfo2"
+spaces_access_id  = ""
+spaces_secret_key = ""
+fqdn              = "example.com"

@@ -23,11 +23,11 @@ This repo will create a Digital Ocean Droplet running Ubuntu 18.04 that has the 
 
 ## Usage
 1. [Install terraform version 0.12](https://www.terraform.io/downloads.html).
-2. Fill in the variables from Example Variables, and write them to `vars.tf`.
-3. Write Digital Ocean keys to `vars.tf`, and replace variables as necessary.
-4. Run `terraform init`.
-5. Run `terraform plan`.
-6. Run `terraform apply` if there were no errors during `terraform plan`.
+1. `cp varfile.tfvars terraform.tfvars`
+1. Add Digital Ocean API key and Digital Ocean Spaces key info.
+1. Run `terraform init`.
+1. Run `terraform plan`.
+1. Run `terraform apply` if there were no errors during `terraform plan`.
 
 ## Pre-commit hook to generate terraform graph files
 Requires `graphviz` on your local system, which can be installed with `sudo apt install graphviz` or `brew install graphviz`.
