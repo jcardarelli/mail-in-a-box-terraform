@@ -28,10 +28,6 @@ variable "droplet_private_networking" {
   description = "Enable private networking for miab droplet."
 }
 
-variable "droplet_region" {
-  description = "Digital Ocean region where the MiaB droplet will be hosted."
-}
-
 variable "droplet_size" {
   default     = "s-1vcpu-1gb"
   description = "CPU and memory sizing for the MiaB droplet."
