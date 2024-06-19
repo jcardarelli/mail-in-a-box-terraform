@@ -40,3 +40,8 @@ variable "droplet_size" {
 variable "ssh_private_key" {
   description = "The path to the SSH key you'd like to access the MiaB host with."
 }
+
+variable "miab_STORAGE_ROOT" {
+  default     = "/root/miab/"
+  description = "Base directory for MiaB files."
+}
