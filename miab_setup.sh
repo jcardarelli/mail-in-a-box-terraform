@@ -16,7 +16,11 @@ DO_REGION="$5"
 SSH_PORT="24224"
 
 # Update, upgrade packages, and install S3 filesystem for DO Spaces
-apt-get update && apt-get upgrade -y
+apt-get update
+if ! apt-get upgrade -y; then
+  echo "first attempt at apt upgrade -y failed, trying again..."
+  apt-get upgrade -y
+fi
 apt-get install -y \
   jq \
   s3fs
