@@ -18,6 +18,8 @@ SSH_PORT="24224"
 # Update, upgrade packages, and install S3 filesystem for DO Spaces
 apt-get update
 if ! apt-get upgrade -y; then
+  echo "apt processes:"
+  pgrep apt
   echo "first attempt at apt upgrade -y failed, trying again..."
   apt-get upgrade -y
 fi
