@@ -44,6 +44,7 @@ resource "digitalocean_droplet" "miab" {
   region   = var.do_region
   size     = var.droplet_size
   ssh_keys = [digitalocean_ssh_key.miab.fingerprint]
+  backups  = true
 
   depends_on = [digitalocean_spaces_bucket.miab]
 
