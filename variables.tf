@@ -6,6 +6,11 @@ variable "do_region" {
   description = "Digital Ocean region where the MiaB droplet will be hosted."
 }
 
+variable "spaces_backup_enabled" {
+  default     = false
+  description = "If enabled, a spaces bucket will be created, and miab will send backups there."
+}
+
 variable "spaces_access_id" {
   description = "Digital Ocean Spaces access ID."
 }

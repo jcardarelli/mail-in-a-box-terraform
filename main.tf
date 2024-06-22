@@ -22,6 +22,7 @@ resource "digitalocean_ssh_key" "miab" {
 resource "digitalocean_spaces_bucket" "miab" {
   name   = var.fqdn
   region = var.do_region
+  count  = var.spaces_backup_enabled == "" ? 1 : 0
 
   # TODO: Troubleshoot provisioning with this block uncommented
   # $ ~/github/mail-in-a-box-tf$ terraform -version
