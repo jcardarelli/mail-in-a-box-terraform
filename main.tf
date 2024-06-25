@@ -46,6 +46,9 @@ resource "digitalocean_droplet" "miab" {
   ssh_keys = [digitalocean_ssh_key.miab.fingerprint]
   backups  = true
 
+  # TODO: Replace this with user_data property on the droplet resource iteself
+  # user_data = "miab-setup.yaml"
+
   depends_on = [digitalocean_spaces_bucket.miab]
 
   provisioner "file" {
@@ -60,6 +63,7 @@ resource "digitalocean_droplet" "miab" {
     destination = "/tmp/miab_setup.sh"
   }
 
+  # TODO: Replace this with user_data property on the droplet resource iteself
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
