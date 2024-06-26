@@ -1,5 +1,5 @@
 do_token          = ""
-do_region         = "sfo2"
+do_region         = "sfo3"
 spaces_access_id  = ""
 spaces_secret_key = ""
 fqdn              = "example.com"
