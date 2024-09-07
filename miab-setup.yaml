@@ -1,0 +1,13 @@
+---
+users:
+  - name: miab-installer
+    shell: /bin/bash
+  - name: box
+    shell: /bin/bash
+packages:
+  - s3fs
+runcmd:
+  - 'curl -s https://mailinabox.email/setup.sh | bash'
+  - 'sed -i "s/#Port 22/Port $SSH_PORT/" /etc/ssh/sshd_config'
+  - 'sed -i "s/#ListenAddress 0.0.0.0/ListenAddress $PRIVATE_IP/" /etc/ssh/sshd_config'
+  - 'systemctl restart ssh.service'
