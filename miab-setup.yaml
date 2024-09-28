@@ -1,9 +1,9 @@
----
 users:
   - name: miab-installer
     shell: /bin/bash
   - name: box
     shell: /bin/bash
+package_update: true
 packages:
   - s3fs
 runcmd:
