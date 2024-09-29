@@ -46,3 +46,7 @@ variable "miab_STORAGE_ROOT" {
   default     = "/root/miab/"
   description = "Base directory for MiaB files."
 }
+
+variable "ssh_port" {
+  description = "Non-default port for SSH"
+}

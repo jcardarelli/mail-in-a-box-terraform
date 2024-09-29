@@ -48,33 +48,9 @@ resource "digitalocean_droplet" "miab" {
 
   depends_on = [digitalocean_spaces_bucket.miab]
 
-  provisioner "file" {
-    connection {
-      type        = "ssh"
-      user        = "root"
-      host        = digitalocean_droplet.miab.ipv4_address
-      private_key = file(var.ssh_private_key)
-      agent       = false
-    }
-    source      = "miab_setup.sh"
-    destination = "/tmp/miab_setup.sh"
-  }
-
-  # TODO: Replace this with user_data property on the droplet resource iteself
-  # user_data = "miab-setup.yaml"
-  provisioner "remote-exec" {
-    connection {
-      type        = "ssh"
-      user        = "root"
-      host        = digitalocean_droplet.miab.ipv4_address
-      private_key = file(var.ssh_private_key)
-      agent       = false
-    }
-    inline = [
-      "chmod +x /tmp/miab_setup.sh",
-      "/tmp/miab_setup.sh ${var.fqdn} ${digitalocean_floating_ip.miab.ip_address} ${var.miab_STORAGE_ROOT} ${var.do_region}"
-    ]
-  }
+  user_data = templatefile("${path.module}/miab-setup.yaml", {
+    ssh_port = var.ssh_port
+  })
 }
 
 output "floating_ip_address" {

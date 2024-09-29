@@ -1,13 +1,28 @@
+#cloud-config
 users:
   - name: miab-installer
     shell: /bin/bash
   - name: box
     shell: /bin/bash
 package_update: true
+package_upgrade: true
 packages:
+  - jq
   - s3fs
 runcmd:
-  - 'curl -s https://mailinabox.email/setup.sh | bash'
-  - 'sed -i "s/#Port 22/Port $SSH_PORT/" /etc/ssh/sshd_config'
-  - 'sed -i "s/#ListenAddress 0.0.0.0/ListenAddress $PRIVATE_IP/" /etc/ssh/sshd_config'
+  # Install Mail-in-a-box
+  - 'curl -s https://mailinabox.email/setup.sh | sudo -E bash'
+  # Install Digital Ocean metrics agent
+  - 'curl -sSL https://repos.insights.digitalocean.com/install.sh | bash'
+  # Change SSH to non-standard port
+  - 'sed -i "s/#Port 22/Port ${ssh_port}/" /etc/ssh/sshd_config'
+  # Only allow SSH connections via the private Droplet IP
+  - 'sed -i "s/#ListenAddress 0.0.0.0/ListenAddress $(curl -s http://169.254.169.254/metadata/v1/interfaces/private/0/ipv4/address)/" /etc/ssh/sshd_config'
+  # Delete firewall rule for SSH standard port
+  - 'ufw delete "allow 22/tcp'
+  # Add firewall rule for non-standard SSH port
+  - 'ufw allow ${ssh_port}/tcp'
+  - 'ufw enable'
+  # Restart SSH
   - 'systemctl restart ssh.service'
+  - echo "user-data initialization complete at $(date)" >> /var/log/cloud-init.log
