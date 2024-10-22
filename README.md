@@ -50,6 +50,7 @@ else
   fi
 fi
 ```
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -60,7 +61,8 @@ fi
 
 | Name | Version |
 |------|---------|
-| <a name="provider_digitalocean"></a> [digitalocean](#provider\_digitalocean) | ~> 2.0 |
+| <a name="provider_digitalocean"></a> [digitalocean](#provider\_digitalocean) | 2.42.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
 ## Modules
 
@@ -75,6 +77,7 @@ No modules.
 | [digitalocean_floating_ip_assignment.miab](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/floating_ip_assignment) | resource |
 | [digitalocean_spaces_bucket.miab](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/spaces_bucket) | resource |
 | [digitalocean_ssh_key.miab](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/ssh_key) | resource |
+| [random_integer.ssh_port](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/integer) | resource |
 
 ## Inputs
 
@@ -82,11 +85,13 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_do_region"></a> [do\_region](#input\_do\_region) | Digital Ocean region where the MiaB droplet will be hosted. | `any` | n/a | yes |
 | <a name="input_do_token"></a> [do\_token](#input\_do\_token) | Token to authenticate with your Digital Ocean account. | `any` | n/a | yes |
-| <a name="input_droplet_image"></a> [droplet\_image](#input\_droplet\_image) | Base OS image to use for the MiaB droplet. | `string` | `"ubuntu-24-04-x64"` | no |
+| <a name="input_droplet_image"></a> [droplet\_image](#input\_droplet\_image) | Base OS image to use for the MiaB droplet. | `string` | `"ubuntu-22-04-x64"` | no |
 | <a name="input_droplet_private_networking"></a> [droplet\_private\_networking](#input\_droplet\_private\_networking) | Enable private networking for miab droplet. | `string` | `"true"` | no |
 | <a name="input_droplet_size"></a> [droplet\_size](#input\_droplet\_size) | CPU and memory sizing for the MiaB droplet. | `string` | `"s-1vcpu-1gb"` | no |
-| <a name="input_fqdn"></a> [fqdn](#input\_fqdn) | Domain name for your email server. This is typically box.example.com, and your email address would be you@example.com. | `any` | n/a | yes |
-| <a name="input_miab_STORAGE_ROOT"></a> [miab\_STORAGE\_ROOT](#input\_miab\_STORAGE\_ROOT) | Base directory for MiaB files. | `string` | `"/root/miab/"` | no |
+| <a name="input_ipv6_enabled"></a> [ipv6\_enabled](#input\_ipv6\_enabled) | Enable IPv6 for MiaB and the Droplet | `bool` | `false` | no |
+| <a name="input_miab_primary_hostname"></a> [miab\_primary\_hostname](#input\_miab\_primary\_hostname) | Fully-qualified domain name for your email server. This is typically box.example.com, and your email address would be you@example.com. | `string` | n/a | yes |
+| <a name="input_miab_storage_root"></a> [miab\_storage\_root](#input\_miab\_storage\_root) | Base directory for MiaB files. | `string` | `"/root/miab/"` | no |
+| <a name="input_miab_storage_user"></a> [miab\_storage\_user](#input\_miab\_storage\_user) | MiaB storage username | `string` | `"user-data"` | no |
 | <a name="input_spaces_access_id"></a> [spaces\_access\_id](#input\_spaces\_access\_id) | Digital Ocean Spaces access ID. | `any` | n/a | yes |
 | <a name="input_spaces_backup_enabled"></a> [spaces\_backup\_enabled](#input\_spaces\_backup\_enabled) | If enabled, a spaces bucket will be created, and miab will send backups there. | `bool` | `false` | no |
 | <a name="input_spaces_secret_key"></a> [spaces\_secret\_key](#input\_spaces\_secret\_key) | Digital Ocean Spaces secret key. | `any` | n/a | yes |
@@ -97,5 +102,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_droplet_ip"></a> [droplet\_ip](#output\_droplet\_ip) | IP address of MiaB droplet |
-| <a name="output_floating_ip_address"></a> [floating\_ip\_address](#output\_floating\_ip\_address) | n/a |
+| <a name="output_droplet_id"></a> [droplet\_id](#output\_droplet\_id) | ID of MiaB droplet |
+| <a name="output_ssh_port"></a> [ssh\_port](#output\_ssh\_port) | SSH port for MiaB droplet |
+<!-- END_TF_DOCS -->
