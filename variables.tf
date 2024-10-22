@@ -19,10 +19,6 @@ variable "spaces_secret_key" {
   description = "Digital Ocean Spaces secret key."
 }
 
-variable "fqdn" {
-  description = "Domain name for your email server. This is typically box.example.com, and your email address would be you@example.com."
-}
-
 variable "droplet_image" {
   default     = "ubuntu-22-04-x64"
   description = "Base OS image to use for the MiaB droplet."
@@ -42,9 +38,27 @@ variable "ssh_private_key" {
   description = "The path to the SSH key you'd like to access the MiaB host with."
 }
 
-variable "miab_STORAGE_ROOT" {
+variable "miab_storage_user" {
+  type        = string
+  default     = "user-data"
+  description = "MiaB storage username"
+}
+
+variable "miab_storage_root" {
+  type        = string
   default     = "/root/miab/"
   description = "Base directory for MiaB files."
+}
+
+variable "miab_primary_hostname" {
+  type        = string
+  description = "Fully-qualified domain name for your email server. This is typically box.example.com, and your email address would be you@example.com."
+}
+
+variable "ipv6_enabled" {
+  type        = bool
+  description = "Enable IPv6 for MiaB and the Droplet"
+  default     = false
 }
 
 variable "ssh_port" {
